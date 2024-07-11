@@ -2,6 +2,7 @@
 
 import { Chart } from "./Chart";
 import styles from "./CollaborativeApp.module.css";
+import Highcharts from "highcharts";
 
 export function CollaborativeApp() {
   return (
@@ -15,7 +16,7 @@ export function CollaborativeApp() {
   );
 }
 
-const chart1 = {
+const chart1: Highcharts.Options = {
   title: {
     text: "Estimated US Energy Consumption in 2017",
   },
@@ -29,11 +30,9 @@ const chart1 = {
     },
   },
   tooltip: {
-    headerFormat: null,
     pointFormat:
       "{point.fromNode.name} \u2192 {point.toNode.name}: {point.weight:.2f} " +
       "quads",
-    nodeFormat: "{point.name}: {point.sum:.2f} quads",
   },
   series: [
     {
@@ -43,37 +42,31 @@ const chart1 = {
         {
           id: "Electricity & Heat",
           color: "#ffa500",
-          offset: -110,
         },
         {
           id: "Residential",
           color: "#74ffe7",
           column: 2,
-          offset: 50,
         },
         {
           id: "Commercial",
           color: "#8cff74",
           column: 2,
-          offset: 50,
         },
         {
           id: "Industrial",
           color: "#ff8da1",
           column: 2,
-          offset: 50,
         },
         {
           id: "Transportation",
           color: "#f4c0ff",
           column: 2,
-          offset: 50,
         },
         {
           id: "Rejected Energy",
           color: "#e6e6e6",
           column: 3,
-          offset: -30,
         },
         {
           id: "Energy Services",
@@ -115,7 +108,6 @@ const chart1 = {
         {
           id: "Petroleum",
           color: "#989898",
-          offset: -1,
         },
       ],
 
@@ -175,23 +167,25 @@ const chart1 = {
   ],
 };
 
-const chart2 = {
+const chart2: Highcharts.Options = {
   title: {
     text: "My chart",
   },
   series: [
     {
+      type: "area",
       data: [1, 2, 3],
     },
   ],
 };
 
-const chart3 = {
+const chart3: Highcharts.Options = {
   title: {
     text: "My other chart",
   },
   series: [
     {
+      type: "bar",
       data: [5, 2, 3],
     },
   ],
