@@ -2,11 +2,11 @@
 
 import styles from "./Header.module.css";
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
+import { InboxPopover } from "./InboxPopover";
 
 const AVATAR_SIZE = 36;
 
 export function Header() {
-  // return null;
   const others = useOthers();
   const self = useSelf();
 
@@ -14,7 +14,7 @@ export function Header() {
     <>
       <header className={styles.header}>
         <Logo />
-        <div>
+        <div className={styles.headerRight}>
           {others.map((other) => (
             <img
               width={AVATAR_SIZE}
@@ -33,6 +33,7 @@ export function Header() {
             className={styles.avatar}
             draggable={false}
           />
+          <InboxPopover />
         </div>
       </header>
       <div className={styles.title}>

@@ -30,3 +30,13 @@
   margin: 0 auto;
   padding: 0 48px;
 }
+
+.headerRight {
+  display: flex;
+  justify-items: flex-end;
+  align-items: center;
+}
+
+.headerRight > *:last-child {
+  margin-left: 12px;
+}

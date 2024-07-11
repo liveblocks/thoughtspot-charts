@@ -34,6 +34,10 @@ export function Providers({ children }: PropsWithChildren) {
         const userIds = await response.json();
         return userIds;
       }}
+      resolveRoomsInfo={({ roomIds }) => {
+        // In your real app, return the name of each room here
+        return roomIds.map(() => ({ name: "Analytics" }));
+      }}
     >
       {children}
     </LiveblocksProvider>
