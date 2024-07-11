@@ -73,7 +73,7 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
             reset();
           }}
         >
-          <NewThreadCursor />
+          <NewThreadCursor rect={rect} />
         </div>
       ) : null}
 
@@ -101,6 +101,7 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
               className="composer"
               onComposerSubmit={({ body }, e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 setState("initial");
 
                 // Percentage across current rect
@@ -124,7 +125,7 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
 }
 
 // Render the new thread component over the current user's cursor
-function NewThreadCursor() {
+function NewThreadCursor({ rect }: { rect: DOMRect }) {
   const [coords, setCoords] = useState({
     x: -10000,
     y: -10000,
@@ -133,8 +134,8 @@ function NewThreadCursor() {
   useEffect(() => {
     const updatePosition = (e: MouseEvent) => {
       setCoords({
-        x: e.clientX,
-        y: e.clientY,
+        x: e.pageX - rect.left,
+        y: e.pageY - rect.top,
       });
     };
 

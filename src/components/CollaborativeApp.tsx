@@ -2,7 +2,18 @@
 
 import { Chart } from "./Chart";
 import styles from "./CollaborativeApp.module.css";
-import { useThreads } from "@liveblocks/react/suspense";
+
+export function CollaborativeApp() {
+  return (
+    <div className={styles.wrapper}>
+      <Chart id="chart-1" options={chart1} showThreadList={true} />
+      <div className={styles.grid}>
+        <Chart id="chart-2" options={chart2} showThreadList={false} />
+        <Chart id="chart-3" options={chart3} showThreadList={false} />
+      </div>
+    </div>
+  );
+}
 
 const chart1 = {
   title: {
@@ -166,7 +177,7 @@ const chart1 = {
 
 const chart2 = {
   title: {
-    text: "My stock chart",
+    text: "My chart",
   },
   series: [
     {
@@ -177,23 +188,11 @@ const chart2 = {
 
 const chart3 = {
   title: {
-    text: "My stock chart",
+    text: "My other chart",
   },
   series: [
     {
-      data: [1, 2, 3],
+      data: [5, 2, 3],
     },
   ],
 };
-
-export function CollaborativeApp() {
-  return (
-    <div className={styles.wrapper}>
-      <Chart id="chart-1" options={chart1} showThreadList={true} />
-      <div className={styles.grid}>
-        <Chart id="chart-2" options={chart2} showThreadList={false} />
-        <Chart id="chart-3" options={chart3} showThreadList={false} />
-      </div>
-    </div>
-  );
-}
