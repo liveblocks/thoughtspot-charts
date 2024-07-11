@@ -4,7 +4,7 @@ import { useCreateThread, useSelf } from "@liveblocks/react/suspense";
 import styles from "./Toolbar.module.css";
 import avatarStyles from "./CommentsCanvas.module.css";
 
-export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
+export function Toolbar({ chartId }: { chartId: string }) {
   // Get create thread function and the current user
   const createThread = useCreateThread();
   const creator = useSelf((me) => me.info);
@@ -28,19 +28,7 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
           onClick={() => setState("placing")}
           style={{ cursor: state === "placing" ? "none" : undefined }}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2zM12 7v6M9 10h6" />
-          </svg>
+          +
         </button>
       </div>
 
@@ -62,10 +50,7 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
           onClick={(e) => {
             // On click, get coords and place down composer
             const avatarOffset = 42;
-            setCoords({
-              x: e.pageX + avatarOffset - rect.left,
-              y: e.pageY - rect.top,
-            });
+            setCoords({ x: e.clientX + avatarOffset, y: e.clientY });
             setState("placed");
           }}
           onContextMenu={(e) => {
@@ -102,17 +87,10 @@ export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
               onComposerSubmit={({ body }, e) => {
                 e.preventDefault();
                 setState("initial");
-
-                // Percentage across current rect
-                const { x, y } = {
-                  x: coords.x / rect.width,
-                  y: coords.y / rect.height,
-                };
-
-                // Create a new thread with the coords as metadata
+                // Create a new thread with the current coords as metadata
                 createThread({
                   body,
-                  metadata: { chartId, x, y },
+                  metadata: { chartId, x: coords.x, y: coords.y },
                 });
               }}
             />

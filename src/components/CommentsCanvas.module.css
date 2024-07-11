@@ -7,7 +7,11 @@
   pointer-events: none;
 }
 
-.draggableThread {
+.wrapper > * {
+  pointer-events: all;
+}
+
+.chartThread {
   position: absolute;
   top: 0;
   left: 0;
@@ -33,7 +37,7 @@
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
   background: var(--lb-background);
-  cursor: grab;
+  cursor: pointer;
 }
 
 .avatar > img,

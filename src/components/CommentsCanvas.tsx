@@ -1,68 +1,66 @@
 import { Thread } from "@liveblocks/react-ui";
-import { ThreadData } from "@liveblocks/core";
-import {
-  useThreads,
-  useEditThreadMetadata,
-  useUser,
-} from "@liveblocks/react/suspense";
-import {
-  DataRef,
-  DndContext,
-  DragEndEvent,
-  PointerSensor,
-  TouchSensor,
-  useDraggable,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { useCallback, useMemo, useState } from "react";
+import { ThreadData } from "@liveblocks/client";
+import { useThreads, useUser } from "@liveblocks/react/suspense";
+import { useDraggable } from "@dnd-kit/core";
+import { useMemo, useRef, useState } from "react";
 import styles from "./CommentsCanvas.module.css";
 import { Toolbar } from "./Toolbar";
+import { useBoundingRect } from "./useBoundingRect";
 
-export function CommentsCanvas({ chartId }: { chartId: string }) {
-  const { threads } = useThreads({ query: { metadata: { chartId } } });
-  const editThreadMetadata = useEditThreadMetadata();
-
-  // Allow click event on avatar if thread moved less than 3px
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 3,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        distance: 3,
-      },
-    })
-  );
-
-  // On drag end, update thread metadata with new coords
-  const handleDragEnd = useCallback(({ active, delta }: DragEndEvent) => {
-    const thread = (active.data as DataRef<{ thread: ThreadData }>).current
-      ?.thread;
-
-    if (!thread) {
-      return;
-    }
-
-    editThreadMetadata({
-      threadId: thread.id,
-      metadata: {
-        x: thread.metadata.x + delta.x,
-        y: thread.metadata.y + delta.y,
-      },
-    });
-  }, []);
+export function CommentsCanvas({
+  chartId,
+  threads,
+}: {
+  chartId: string;
+  threads: ThreadData[];
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const rect = useBoundingRect(ref);
 
   return (
-    <div className={`${styles.wrapper} lb-root`}>
-      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
-        {threads.map((thread) => (
-          <DraggableThread key={thread.id} thread={thread} />
-        ))}
-      </DndContext>
-      <Toolbar chartId={chartId} />
+    <div className={`${styles.wrapper} lb-root`} ref={ref}>
+      {threads.map((thread) => (
+        <ChartThread key={thread.id} thread={thread} />
+      ))}
+      {rect ? <Toolbar rect={rect} chartId={chartId} /> : null}
+    </div>
+  );
+}
+
+function ChartThread({ thread }: { thread: ThreadData }) {
+  // Open threads that have just been created
+  const startOpen = useMemo(() => {
+    return Number(new Date()) - Number(new Date(thread.createdAt)) <= 100;
+  }, [thread]);
+
+  const [open, setOpen] = useState(startOpen);
+
+  // Get the creator of the thread
+  const { user: creator } = useUser(thread.comments[0].userId);
+
+  return (
+    <div
+      className={styles.chartThread}
+      style={{
+        position: "absolute",
+        left: `${thread.metadata.x * 100}%`,
+        top: `${thread.metadata.y * 100}%`,
+      }}
+    >
+      <div className={styles.avatar} onClick={() => setOpen(!open)}>
+        {creator ? (
+          <img
+            src={creator.avatar}
+            alt={creator.name}
+            width="28px"
+            height="28px"
+            draggable={false}
+          />
+        ) : (
+          <div />
+        )}
+      </div>
+      {open ? <Thread thread={thread} className="thread" /> : null}
     </div>
   );
 }
@@ -81,9 +79,7 @@ function DraggableThread({ thread }: { thread: ThreadData }) {
     data: { thread }, // Pass thread to DndContext drag end event
   });
 
-  // If currently dragging, add drag values to current metadata
-  const x = transform ? transform.x + thread.metadata.x : thread.metadata.x;
-  const y = transform ? transform.y + thread.metadata.y : thread.metadata.y;
+  const { x, y } = thread.metadata;
 
   // Get the creator of the thread
   const { user: creator } = useUser(thread.comments[0].userId);
