@@ -7,6 +7,7 @@ import { Loading } from "../components/Loading";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { ErrorBoundary } from "react-error-boundary";
 import { CollaborativeApp } from "../components/CollaborativeApp";
+import { Header } from "../components/Header";
 
 export default function Page() {
   const roomId = useExampleRoomId("liveblocks:demo:thoughtspot");
@@ -19,7 +20,12 @@ export default function Page() {
         }
       >
         <ClientSideSuspense fallback={<Loading />}>
-          <CollaborativeApp />
+          {() => (
+            <>
+              <Header />
+              <CollaborativeApp />
+            </>
+          )}
         </ClientSideSuspense>
       </ErrorBoundary>
     </RoomProvider>
