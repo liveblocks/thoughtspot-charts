@@ -4,11 +4,8 @@ import HighchartsReact, {
 } from "highcharts-react-official";
 import styles from "./Chart.module.css";
 import { ChartCommentsOverlay } from "./ChartCommentsOverlay";
-import Sankey from "highcharts/modules/sankey";
 import { useThreads } from "@liveblocks/react/suspense";
 import { Thread } from "@liveblocks/react-ui";
-
-// Sankey(Highcharts);
 
 export function Chart({
   id,

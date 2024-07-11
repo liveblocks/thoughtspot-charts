@@ -4,7 +4,13 @@ import { useCreateThread, useSelf } from "@liveblocks/react/suspense";
 import styles from "./Toolbar.module.css";
 import avatarStyles from "./CommentsCanvas.module.css";
 
-export function Toolbar({ rect, chartId }: { rect: DOMRect; chartId: string }) {
+export function CreateChartThread({
+  rect,
+  chartId,
+}: {
+  rect: DOMRect;
+  chartId: string;
+}) {
   // Get create thread function and the current user
   const createThread = useCreateThread();
   const creator = useSelf((me) => me.info);

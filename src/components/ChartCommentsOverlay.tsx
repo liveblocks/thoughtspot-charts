@@ -1,11 +1,15 @@
 import { Thread } from "@liveblocks/react-ui";
 import { ThreadData } from "@liveblocks/client";
-import { useThreads, useUser } from "@liveblocks/react/suspense";
-import { useDraggable } from "@dnd-kit/core";
-import { useMemo, useRef, useState } from "react";
+import { useUser } from "@liveblocks/react/suspense";
+import {
+  MutableRefObject,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "./CommentsCanvas.module.css";
-import { Toolbar } from "./Toolbar";
-import { useBoundingRect } from "./useBoundingRect";
+import { CreateChartThread } from "./CreateChartThread";
 
 export function ChartCommentsOverlay({
   chartId,
@@ -22,7 +26,7 @@ export function ChartCommentsOverlay({
       {threads.map((thread) => (
         <ChartThread key={thread.id} thread={thread} />
       ))}
-      {rect ? <Toolbar rect={rect} chartId={chartId} /> : null}
+      {rect ? <CreateChartThread rect={rect} chartId={chartId} /> : null}
     </div>
   );
 }
@@ -65,49 +69,32 @@ function ChartThread({ thread }: { thread: ThreadData }) {
   );
 }
 
-// A draggable thread
-function DraggableThread({ thread }: { thread: ThreadData }) {
-  // Open threads that have just been created
-  const startOpen = useMemo(() => {
-    return Number(new Date()) - Number(new Date(thread.createdAt)) <= 100;
-  }, [thread]);
-  const [open, setOpen] = useState(startOpen);
+// Get coords of an element
+export function useBoundingRect(ref: MutableRefObject<HTMLElement | null>) {
+  let [rect, setRect] = useState<DOMRect | null>(null);
 
-  // Enable drag
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: thread.id,
-    data: { thread }, // Pass thread to DndContext drag end event
-  });
+  useLayoutEffect(() => {
+    let target = ref.current;
+    if (target == null) return;
+    setRect(target.getBoundingClientRect());
+    let observer = new ResizeObserver(() => {
+      // ResizeObserver provides clientRect as a part of observed entries
+      // but it's not in sync with result of getBoundingClientRect()
+      // which causes unnecessary state update (and so re-renders)
+      let newRect = target.getBoundingClientRect();
+      // getBoundingClientRect() always returns a new instance
+      // DOMRect doesn't have own properties so it needs special shallowEqual implementation
+      setRect((rect) => (equals(rect, newRect) ? rect : newRect));
+    });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
-  const { x, y } = thread.metadata;
+  return rect;
+}
 
-  // Get the creator of the thread
-  const { user: creator } = useUser(thread.comments[0].userId);
-
-  return (
-    <div
-      ref={setNodeRef}
-      className={styles.draggableThread}
-      style={{
-        transform: `translate3d(${x}px, ${y}px, 0)`,
-      }}
-    >
-      <div {...listeners} {...attributes}>
-        <div className={styles.avatar} onClick={() => setOpen(!open)}>
-          {creator ? (
-            <img
-              src={creator.avatar}
-              alt={creator.name}
-              width="28px"
-              height="28px"
-              draggable={false}
-            />
-          ) : (
-            <div />
-          )}
-        </div>
-      </div>
-      {open ? <Thread thread={thread} className="thread" /> : null}
-    </div>
-  );
+function equals(a: any, b: any) {
+  if (a == null || b == null) return false;
+  for (let key in a) if (a[key] !== b[key]) return false;
+  return true;
 }

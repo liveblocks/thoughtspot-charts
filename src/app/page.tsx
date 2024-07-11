@@ -15,9 +15,7 @@ export default function Page() {
   return (
     <RoomProvider id={roomId}>
       <ErrorBoundary
-        fallback={
-          <div className="error">There was an error while getting threads.</div>
-        }
+        fallback={<div className="error">There was an error.</div>}
       >
         <ClientSideSuspense fallback={<Loading />}>
           {() => (

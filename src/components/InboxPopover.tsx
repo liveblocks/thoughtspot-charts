@@ -12,9 +12,9 @@ import { Loading } from "./Loading";
 import { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import clsx from "clsx";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// Render each notification for the current user (works across different rooms)
 function Inbox({ className, ...props }: ComponentPropsWithoutRef<"div">) {
   const { inboxNotifications } = useInboxNotifications();
 
@@ -30,7 +30,6 @@ function Inbox({ className, ...props }: ComponentPropsWithoutRef<"div">) {
             <InboxNotification
               key={inboxNotification.id}
               inboxNotification={inboxNotification}
-              // components={{ Anchor:  }}
             />
           );
         })}

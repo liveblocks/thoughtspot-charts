@@ -7,7 +7,10 @@ import { InboxPopover } from "./InboxPopover";
 const AVATAR_SIZE = 36;
 
 export function Header() {
+  // Other connected users
   const others = useOthers();
+
+  // You
   const self = useSelf();
 
   return (
@@ -15,6 +18,7 @@ export function Header() {
       <header className={styles.header}>
         <Logo />
         <div className={styles.headerRight}>
+          {/* Live avatars */}
           {others.map((other) => (
             <img
               width={AVATAR_SIZE}
@@ -26,6 +30,8 @@ export function Header() {
               draggable={false}
             />
           ))}
+
+          {/* Your avatar */}
           <img
             width={AVATAR_SIZE}
             height={AVATAR_SIZE}
@@ -35,9 +41,12 @@ export function Header() {
             className={styles.avatar}
             draggable={false}
           />
+
+          {/* Notifications */}
           <InboxPopover />
         </div>
       </header>
+      
       <div className={styles.title}>
         <h1>Analytics</h1>
       </div>

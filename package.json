@@ -9,7 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@dnd-kit/core": "^6.1.0",
     "@liveblocks/client": "^2.2.0",
     "@liveblocks/node": "^2.2.0",
     "@liveblocks/react": "^2.2.0",
