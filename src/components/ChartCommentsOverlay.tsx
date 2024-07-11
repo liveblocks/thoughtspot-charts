@@ -7,7 +7,7 @@ import styles from "./CommentsCanvas.module.css";
 import { Toolbar } from "./Toolbar";
 import { useBoundingRect } from "./useBoundingRect";
 
-export function CommentsCanvas({
+export function ChartCommentsOverlay({
   chartId,
   threads,
 }: {

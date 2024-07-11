@@ -3,7 +3,7 @@ import HighchartsReact, {
   HighchartsReactProps,
 } from "highcharts-react-official";
 import styles from "./Chart.module.css";
-import { CommentsCanvas } from "./CommentsCanvas";
+import { ChartCommentsOverlay } from "./ChartCommentsOverlay";
 import Sankey from "highcharts/modules/sankey";
 import { useThreads } from "@liveblocks/react/suspense";
 import { Thread } from "@liveblocks/react-ui";
@@ -25,13 +25,19 @@ export function Chart({
     <div className={styles.chartWrapper}>
       <div className={styles.chart}>
         <HighchartsReact highcharts={Highcharts} options={options} />
-        <CommentsCanvas chartId={id} threads={threads} />
+
+        {/* Overlay comments + add comment button */}
+        <ChartCommentsOverlay chartId={id} threads={threads} />
       </div>
+
+      {/* Sidebar comments */}
       {showThreadList ? (
         <div className={styles.threads}>
-          {threads.map((thread) => (
-            <Thread thread={thread} />
-          ))}
+          {threads.length ? (
+            threads.map((thread) => <Thread thread={thread} />)
+          ) : (
+            <div className={styles.noComments}>← Add a comment</div>
+          )}
         </div>
       ) : null}
     </div>

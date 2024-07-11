@@ -20,6 +20,7 @@ export function Header() {
               width={AVATAR_SIZE}
               height={AVATAR_SIZE}
               alt={other.info.name}
+              title={self.info.name}
               src={other.info.avatar}
               className={styles.avatar}
               draggable={false}
@@ -29,6 +30,7 @@ export function Header() {
             width={AVATAR_SIZE}
             height={AVATAR_SIZE}
             alt={self.info.name}
+            title={"This is you: " + self.info.name}
             src={self.info.avatar}
             className={styles.avatar}
             draggable={false}

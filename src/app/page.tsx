@@ -10,7 +10,7 @@ import { CollaborativeApp } from "../components/CollaborativeApp";
 import { Header } from "../components/Header";
 
 export default function Page() {
-  const roomId = useExampleRoomId("liveblocks:demo:thoughtspot");
+  const roomId = useExampleRoomId("liveblocks:demo:thoughtspot-35354");
 
   return (
     <RoomProvider id={roomId}>
