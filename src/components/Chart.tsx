@@ -8,7 +8,7 @@ import Sankey from "highcharts/modules/sankey";
 import { useThreads } from "@liveblocks/react/suspense";
 import { Thread } from "@liveblocks/react-ui";
 
-Sankey(Highcharts);
+// Sankey(Highcharts);
 
 export function Chart({
   id,
