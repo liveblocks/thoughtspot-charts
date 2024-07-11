@@ -10,6 +10,7 @@ declare global {
     };
     // Custom metadata set on threads, for useThreads, useCreateThread, etc.
     ThreadMetadata: {
+      chartId: string;
       x: number;
       y: number;
     };

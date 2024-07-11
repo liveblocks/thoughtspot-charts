@@ -19,8 +19,8 @@ import { useCallback, useMemo, useState } from "react";
 import styles from "./CommentsCanvas.module.css";
 import { Toolbar } from "./Toolbar";
 
-export function CommentsCanvas() {
-  const { threads } = useThreads();
+export function CommentsCanvas({ chartId }: { chartId: string }) {
+  const { threads } = useThreads({ query: { metadata: { chartId } } });
   const editThreadMetadata = useEditThreadMetadata();
 
   // Allow click event on avatar if thread moved less than 3px
@@ -62,7 +62,7 @@ export function CommentsCanvas() {
           <DraggableThread key={thread.id} thread={thread} />
         ))}
       </DndContext>
-      <Toolbar />
+      <Toolbar chartId={chartId} />
     </div>
   );
 }

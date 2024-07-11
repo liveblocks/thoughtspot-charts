@@ -26,6 +26,8 @@ body {
 
 .lb-root {
   --lb-accent: #44f;
+  --lb-spacing: 14px;
+  font-size: 15px;
 }
 
 main {

@@ -4,7 +4,7 @@ import { useCreateThread, useSelf } from "@liveblocks/react/suspense";
 import styles from "./Toolbar.module.css";
 import avatarStyles from "./CommentsCanvas.module.css";
 
-export function Toolbar() {
+export function Toolbar({ chartId }: { chartId: string }) {
   // Get create thread function and the current user
   const createThread = useCreateThread();
   const creator = useSelf((me) => me.info);
@@ -88,7 +88,10 @@ export function Toolbar() {
                 e.preventDefault();
                 setState("initial");
                 // Create a new thread with the current coords as metadata
-                createThread({ body, metadata: { x: coords.x, y: coords.y } });
+                createThread({
+                  body,
+                  metadata: { chartId, x: coords.x, y: coords.y },
+                });
               }}
             />
           </div>

@@ -1,0 +1,6 @@
+.wrapper {
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  gap: 24px;
+  margin: 48px;
+}

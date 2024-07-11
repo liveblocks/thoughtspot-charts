@@ -6,10 +6,10 @@ import { RoomProvider } from "@liveblocks/react/suspense";
 import { Loading } from "../components/Loading";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { ErrorBoundary } from "react-error-boundary";
-import { CommentsCanvas } from "../components/CommentsCanvas";
+import { CollaborativeApp } from "../components/CollaborativeApp";
 
 export default function Page() {
-  const roomId = useExampleRoomId("liveblocks:examples:nextjs-comments-canvas");
+  const roomId = useExampleRoomId("liveblocks:demo:thoughtspot");
 
   return (
     <RoomProvider id={roomId}>
@@ -19,7 +19,7 @@ export default function Page() {
         }
       >
         <ClientSideSuspense fallback={<Loading />}>
-          <CommentsCanvas />
+          <CollaborativeApp />
         </ClientSideSuspense>
       </ErrorBoundary>
     </RoomProvider>
