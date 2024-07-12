@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Composer } from "@liveblocks/react-ui";
 import { useCreateThread, useSelf } from "@liveblocks/react/suspense";
-import styles from "./Toolbar.module.css";
+import styles from "./CreateChartThread.module.css";
 import avatarStyles from "./CommentsCanvas.module.css";
 
 export function CreateChartThread({

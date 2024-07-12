@@ -11,7 +11,7 @@ import {
 import styles from "./CommentsCanvas.module.css";
 import { CreateChartThread } from "./CreateChartThread";
 
-export function ChartCommentsOverlay({
+export function ChartThreadsOverlay({
   chartId,
   threads,
 }: {

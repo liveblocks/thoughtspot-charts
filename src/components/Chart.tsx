@@ -3,7 +3,7 @@ import HighchartsReact, {
   HighchartsReactProps,
 } from "highcharts-react-official";
 import styles from "./Chart.module.css";
-import { ChartCommentsOverlay } from "./ChartCommentsOverlay";
+import { ChartThreadsOverlay } from "./ChartThreadsOverlay";
 import { useThreads } from "@liveblocks/react/suspense";
 import { Thread } from "@liveblocks/react-ui";
 
@@ -24,7 +24,7 @@ export function Chart({
         <HighchartsReact highcharts={Highcharts} options={options} />
 
         {/* Overlay comments + add comment button */}
-        <ChartCommentsOverlay chartId={id} threads={threads} />
+        <ChartThreadsOverlay chartId={id} threads={threads} />
       </div>
 
       {/* Sidebar comments */}
